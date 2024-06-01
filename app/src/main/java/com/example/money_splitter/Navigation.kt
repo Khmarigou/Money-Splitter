@@ -8,15 +8,21 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.money_splitter.database.ExpenseEvent
+import com.example.money_splitter.database.ExpenseState
 import com.example.money_splitter.screens.DetailScreen
+import com.example.money_splitter.screens.ExpenseScreen
 import com.example.money_splitter.screens.MainScreen
 
 @Composable
-fun Navigation() {
+fun Navigation(
+    state: ExpenseState,
+    onEvent: (ExpenseEvent) -> Unit
+) {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Screen.MainScreen.route) {
         composable(route = Screen.MainScreen.route) {
-            MainScreen(navController = navController)
+            ExpenseScreen(state, onEvent, navController = navController)
         }
         composable(route = Screen.DetailScreen.route) {
             DetailScreen(navController = navController)

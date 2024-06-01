@@ -13,16 +13,5 @@ import com.example.money_splitter.Screen
 
 @Composable
 fun MainScreen(navController: NavController) {
-    Column (
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Text(text = "Main Screen")
-        Button(onClick = {
-            navController.navigate(Screen.DetailScreen.route)
-        }) {
-            Text(text = "Go to Details")
-        }
-    }
+
 }
