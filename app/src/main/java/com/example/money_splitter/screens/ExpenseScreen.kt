@@ -45,33 +45,37 @@ fun ExpenseScreen(
         if(state.isAddingExpense) {
             AddExpenseDialog(state = state, onEvent = onEvent)
         }
-        Text(
-            text = "Expense Screen",
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            textAlign = TextAlign.Center,
-        )
-
-        LazyColumn(
-            contentPadding = padding,
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+        Column(
+            modifier = Modifier.fillMaxSize()
         ) {
-            items(state.expenses) {expense ->
-                Row (
-                    modifier = Modifier.fillMaxWidth()
-                ){
-                    Column(
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Text(text = "${expense.title} (${expense.amount} €)", fontSize = 20.sp)
-                        Text(text = "Payed by ${expense.payer}", fontSize = 12.sp)
-                    }
-                    IconButton(onClick = {
-                        onEvent(ExpenseEvent.DeleteExpense(expense))
-                    }) {
-                        Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete Expense")
+            Text(
+                text = "Expense Screen",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                textAlign = TextAlign.Center,
+            )
+
+            LazyColumn(
+                contentPadding = padding,
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                items(state.expenses) {expense ->
+                    Row (
+                        modifier = Modifier.fillMaxWidth()
+                    ){
+                        Column(
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Text(text = "${expense.title} (${expense.amount} €)", fontSize = 20.sp)
+                            Text(text = "Payed by ${expense.payer}", fontSize = 12.sp)
+                        }
+                        IconButton(onClick = {
+                            onEvent(ExpenseEvent.DeleteExpense(expense))
+                        }) {
+                            Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete Expense")
+                        }
                     }
                 }
             }
