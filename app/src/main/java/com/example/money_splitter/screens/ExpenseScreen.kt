@@ -18,6 +18,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -31,7 +32,6 @@ fun ExpenseScreen(
     onEvent: (ExpenseEvent) -> Unit,
     navController: NavController
 ) {
-    Text(text = "Expense Screen")
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(onClick = { 
@@ -45,6 +45,13 @@ fun ExpenseScreen(
         if(state.isAddingExpense) {
             AddExpenseDialog(state = state, onEvent = onEvent)
         }
+        Text(
+            text = "Expense Screen",
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            textAlign = TextAlign.Center,
+        )
 
         LazyColumn(
             contentPadding = padding,

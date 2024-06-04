@@ -13,4 +13,6 @@ abstract class ExpenseDatabase: RoomDatabase() {
 
     abstract val dao: ExpensesDAO
 
+
+
 }

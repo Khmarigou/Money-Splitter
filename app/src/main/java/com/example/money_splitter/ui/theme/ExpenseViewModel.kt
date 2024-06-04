@@ -7,6 +7,9 @@ import com.example.money_splitter.database.ExpenseEvent
 import com.example.money_splitter.database.ExpenseState
 import com.example.money_splitter.entity.Expense
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -14,7 +17,14 @@ class ExpenseViewModel(
     private val dao: ExpensesDAO
 ): ViewModel() {
     private val _state = MutableStateFlow(ExpenseState())
-    val state = _state
+    private val _expenses = dao.getExpenses()
+    val state = combine(_state, _expenses) { state, expenses ->
+        state.copy(
+            expenses = expenses
+        )
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), ExpenseState())
+
+
 
     fun onEvent(event: ExpenseEvent){
         when(event){
@@ -71,6 +81,10 @@ class ExpenseViewModel(
                 val amount = state.value.amount
                 val date = state.value.date
                 val participants = state.value.participants
+                if(payer.isBlank() || title.isBlank() || description.isBlank() || amount <= 0){
+                    return
+                }
+
                 val expense = Expense(
                     payer = payer,
                     title = title,

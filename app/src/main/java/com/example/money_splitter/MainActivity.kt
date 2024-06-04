@@ -1,6 +1,7 @@
 package com.example.money_splitter
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -30,6 +31,7 @@ class MainActivity : ComponentActivity() {
             "expenses.db"
         ).build()
     }
+
     private val viewModel by viewModels<ExpenseViewModel>(
         factoryProducer = {
             object : ViewModelProvider.Factory {
@@ -46,6 +48,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             MoneySplitterTheme {
                 val state by viewModel.state.collectAsState()
+                Log.d("MainActivity1", "onCreate: ${state.expenses}")
                 Navigation(state, onEvent = viewModel::onEvent)
             }
         }
