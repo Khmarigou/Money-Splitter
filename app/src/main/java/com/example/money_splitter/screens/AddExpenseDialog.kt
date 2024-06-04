@@ -4,11 +4,14 @@ import android.app.AlertDialog
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerFormatter
+import androidx.compose.material3.DisplayMode
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -76,17 +79,25 @@ fun AddExpenseDialog(
                     },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                 )
-                DatePicker(
-                    state = rememberDatePickerState()
-                )
                 TextField(
                     value = state.participants,
                     onValueChange = {
                         onEvent(ExpenseEvent.SetParticipants(it))
                     },
                     placeholder = {
-                        Text(text = "Payer")
+                        Text(text = "Participants")
                     }
+                )
+                DatePicker(
+                    state = rememberDatePickerState(initialSelectedDateMillis = System.currentTimeMillis(), initialDisplayMode = DisplayMode.Input),
+                    title = null,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(),
+                    dateFormatter = DatePickerFormatter(),
+                    headline = { Text(text = "Select Date") },
+                    showModeToggle = false
+
                 )
             }
         },

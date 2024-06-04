@@ -1,5 +1,7 @@
 package com.example.money_splitter.ui.theme
 
+import android.content.Context
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.money_splitter.dao.ExpensesDAO
@@ -14,6 +16,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ExpenseViewModel(
+    private val context: Context,
     private val dao: ExpensesDAO
 ): ViewModel() {
     private val _state = MutableStateFlow(ExpenseState())
@@ -82,6 +85,7 @@ class ExpenseViewModel(
                 val date = state.value.date
                 val participants = state.value.participants
                 if(payer.isBlank() || title.isBlank() || description.isBlank() || amount <= 0){
+                    Toast.makeText(context, "All fields must be filled", Toast.LENGTH_SHORT).show()
                     return
                 }
 
