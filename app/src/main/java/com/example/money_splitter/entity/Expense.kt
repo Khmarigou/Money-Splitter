@@ -18,14 +18,31 @@ data class Expense(
     val participants: List<Participant>,
     val date: Long
 ) {
-    fun splitExpense(){
+    fun splitExpense(): Double {
         val totalAmount = amount
         val totalParticipants = participants.size
         val individualAmount = totalAmount / totalParticipants
 
-        println("Montant total de la dépense : $totalAmount")
-        println("Nombre total de participants : $totalParticipants")
-        println("Montant individuel à payer : $individualAmount")
+        return individualAmount
+    }
+
+    //In this function, we had a list of weight if we want to do an inequal splitting
+
+    fun splitExpenseUnequally(weights: List<Double>): List<Pair<String, Double>> {
+        if (weights.size != participants.size) {
+            throw IllegalArgumentException("The number of weights needs to be equal to the number of participants")
+        }
+
+        val totalWeight = weights.sum()
+        val amountsToPay = mutableListOf<Pair<String, Double>>()
+
+        participants.forEachIndexed { index, participant ->
+            val participantWeight = weights[index]
+            val amountToBePaid = (participantWeight / totalWeight) * amount - participant.amountPaid
+            amountsToPay.add(Pair(participant.name, amountToBePaid))
+        }
+
+        return amountsToPay
     }
 }
 
@@ -40,13 +57,5 @@ class Converters {
     @TypeConverter
     fun fromList(list: List<Participant>): String {
         return Gson().toJson(list)
-    }
-}
-
-class ExpenseTest {
-
-    @Test
-    fun testSplitExpense() {
-
     }
 }
