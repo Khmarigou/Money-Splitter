@@ -27,7 +27,6 @@ data class Expense(
     }
 
     //In this function, we had a list of weight if we want to do an inequal splitting
-
     fun splitExpenseUnequally(weights: List<Double>): List<Pair<String, Double>> {
         if (weights.size != participants.size) {
             throw IllegalArgumentException("The number of weights needs to be equal to the number of participants")
