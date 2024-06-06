@@ -1,6 +1,7 @@
 package com.example.money_splitter.database
 
 import com.example.money_splitter.entity.Expense
+import com.example.money_splitter.entity.Participant
 
 data class ExpenseState(
     val expenses: List<Expense> = emptyList(),

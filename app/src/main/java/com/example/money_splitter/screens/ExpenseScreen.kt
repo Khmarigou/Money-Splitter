@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.money_splitter.database.ExpenseEvent
 import com.example.money_splitter.database.ExpenseState
+import com.example.money_splitter.entity.getParticipantsAsString
 import kotlin.math.exp
 
 @Composable
@@ -70,6 +71,7 @@ fun ExpenseScreen(
                         ) {
                             Text(text = "${expense.title} (${expense.amount} €)", fontSize = 20.sp)
                             Text(text = "Payed by ${expense.payer}", fontSize = 12.sp)
+                            Text(text = "Participants ${expense.getParticipantsAsString()}", fontSize = 12.sp)
                         }
                         IconButton(onClick = {
                             onEvent(ExpenseEvent.DeleteExpense(expense))

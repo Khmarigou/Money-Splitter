@@ -8,6 +8,7 @@ import com.example.money_splitter.dao.ExpensesDAO
 import com.example.money_splitter.database.ExpenseEvent
 import com.example.money_splitter.database.ExpenseState
 import com.example.money_splitter.entity.Expense
+import com.example.money_splitter.entity.Participant
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -53,9 +54,11 @@ class ExpenseViewModel(
 
             }
             is ExpenseEvent.SetDescription -> {
-                _state.update { it.copy(
-                    description = event.description
-                ) }
+                _state.update {
+                    it.copy(
+                        description = event.description
+                    )
+                }
             }
             is ExpenseEvent.SetParticipants -> {
                 _state.update { it.copy(
@@ -83,11 +86,13 @@ class ExpenseViewModel(
                 val description = state.value.description
                 val amount = state.value.amount
                 val date = state.value.date
-                val participants = state.value.participants
+                val participantsString = state.value.participants
                 if(payer.isBlank() || title.isBlank() || description.isBlank() || amount <= 0){
                     Toast.makeText(context, "All fields must be filled", Toast.LENGTH_SHORT).show()
                     return
                 }
+
+                val participants = participantsString.split(",").map { Participant(it.trim()) }
 
                 val expense = Expense(
                     payer = payer,

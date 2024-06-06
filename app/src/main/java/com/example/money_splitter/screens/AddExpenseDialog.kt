@@ -85,7 +85,7 @@ fun AddExpenseDialog(
                         onEvent(ExpenseEvent.SetParticipants(it))
                     },
                     placeholder = {
-                        Text(text = "Participants")
+                        Text(text = "Participants (comma separated)")
                     }
                 )
                 DatePicker(
