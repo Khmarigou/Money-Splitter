@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
@@ -43,14 +45,15 @@ fun AddExpenseDialog(
     val selectedParticipants = remember { mutableStateOf(participants.map { it.name to false }.toMap()) }
 
     AlertDialog(
-        modifier = modifier,
+        modifier = modifier.fillMaxWidth(0.9f),
         onDismissRequest = {
             onEvent(ExpenseEvent.HideDialog)
         },
         title = { "Add Expense"},
         text = {
             Column(
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.verticalScroll(rememberScrollState())
             ) {
                 TextField(
                     value = state.payer,
@@ -126,6 +129,8 @@ fun AddExpenseDialog(
                 contentAlignment = Alignment.CenterEnd
             ) {
                 Button(onClick = {
+                    val selectedParticipantsList = selectedParticipants.value.filter { it.value }.keys.toList()
+                    onEvent(ExpenseEvent.SetParticipants(selectedParticipantsList.joinToString(", ")))
                     onEvent(ExpenseEvent.SaveExpense)
                 }) {
                     Text(text = "Save")
