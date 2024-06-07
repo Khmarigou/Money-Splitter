@@ -28,11 +28,6 @@ class ExpenseViewModel(
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), ExpenseState())
 
-    // Ajoutez une méthode pour mettre à jour les participants sélectionnés dans votre ViewModel
-    fun updateSelectedParticipants(selectedParticipants: List<String>) {
-        val participantsString = selectedParticipants.joinToString(", ")
-        onEvent(ExpenseEvent.SetParticipants(participantsString))
-    }
 
     fun onEvent(event: ExpenseEvent){
         when(event){
