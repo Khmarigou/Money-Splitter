@@ -6,8 +6,6 @@ import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.reflect.TypeToken
 import com.google.gson.Gson
-import org.junit.Test
-import java.time.LocalDateTime
 
 @Entity(tableName = "expenses")
 data class Expense(
@@ -17,7 +15,8 @@ data class Expense(
     val amount: Double,
     val description: String,
     val participants: List<Participant>,
-    val date: Long
+    val date: Long,
+    val community: String
 ) {
     fun splitExpense(): Double {
         val totalAmount = amount

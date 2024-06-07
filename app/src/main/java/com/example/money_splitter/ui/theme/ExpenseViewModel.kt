@@ -75,6 +75,11 @@ class ExpenseViewModel(
                     title = event.title
                 ) }
             }
+            is ExpenseEvent.SetCommunity -> {
+                _state.update { it.copy(
+                    community = event.community
+                ) }
+            }
             ExpenseEvent.ShowDialog -> {
                 _state.update { it.copy(
                     isAddingExpense = true
@@ -91,8 +96,8 @@ class ExpenseViewModel(
                     Toast.makeText(context, "All fields must be filled", Toast.LENGTH_SHORT).show()
                     return
                 }
-
                 val participants = participantsString.split(",").map { Participant(it.trim()) }
+                val community = state.value.community
 
                 val expense = Expense(
                     payer = payer,
@@ -100,7 +105,8 @@ class ExpenseViewModel(
                     description = description,
                     amount = amount,
                     date = date,
-                    participants = participants
+                    participants = participants,
+                    community = community
                 )
                 viewModelScope.launch {
                     dao.insertExpense(expense)
@@ -112,7 +118,8 @@ class ExpenseViewModel(
                     description = "",
                     amount = 0.0,
                     date = System.currentTimeMillis(),
-                    participants = ""
+                    participants = "",
+                    community = ""
                 ) }
             }
         }

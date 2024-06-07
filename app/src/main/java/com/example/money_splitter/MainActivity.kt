@@ -18,7 +18,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
+import com.example.money_splitter.database.CommunityDatabase
 import com.example.money_splitter.database.ExpenseDatabase
+import com.example.money_splitter.ui.theme.CommunityViewModel
 import com.example.money_splitter.ui.theme.ExpenseViewModel
 import com.example.money_splitter.ui.theme.MoneySplitterTheme
 
@@ -32,11 +34,29 @@ class MainActivity : ComponentActivity() {
         ).build()
     }
 
-    private val viewModel by viewModels<ExpenseViewModel>(
+    private val Comdb by lazy {
+        Room.databaseBuilder(
+            applicationContext,
+            CommunityDatabase::class.java,
+            "community.db"
+        ).build()
+    }
+
+    private val ExpviewModel by viewModels<ExpenseViewModel>(
         factoryProducer = {
             object : ViewModelProvider.Factory {
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
                     return ExpenseViewModel(applicationContext, db.dao) as T
+                }
+            }
+        }
+    )
+
+    private val ComviewModel by viewModels<CommunityViewModel>(
+        factoryProducer = {
+            object : ViewModelProvider.Factory {
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                    return CommunityViewModel(applicationContext, Comdb.CommunityDAO()) as T
                 }
             }
         }
@@ -47,9 +67,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MoneySplitterTheme {
-                val state by viewModel.state.collectAsState()
-                Log.d("MainActivity1", "onCreate: ${state.expenses}")
-                Navigation(state, onEvent = viewModel::onEvent)
+                val stateCom by ComviewModel.state.collectAsState()
+                val stateExp by ExpviewModel.state.collectAsState()
+                Navigation(stateExp = stateExp, stateCom = stateCom, onEventExp = ExpviewModel::onEvent, onEventCom = ComviewModel::onEvent, )
             }
         }
     }

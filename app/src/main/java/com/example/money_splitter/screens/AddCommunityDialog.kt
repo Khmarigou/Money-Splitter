@@ -21,86 +21,48 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.example.money_splitter.database.CommunityEvent
+import com.example.money_splitter.database.CommunityState
 import com.example.money_splitter.database.ExpenseEvent
 import com.example.money_splitter.database.ExpenseState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddExpenseDialog(
-    state: ExpenseState,
-    onEvent: (ExpenseEvent) -> Unit,
-    modifier: Modifier = Modifier,
-    nameCommunity: String
+fun AddCommunityDialog(
+    state: CommunityState,
+    onEvent: (CommunityEvent) -> Unit,
+    modifier: Modifier = Modifier
 ) {
 
     AlertDialog(
         modifier = modifier,
         onDismissRequest = {
-            onEvent(ExpenseEvent.HideDialog)
+            onEvent(CommunityEvent.HideDialog)
         },
-        title = { "Add Expense"},
+        title = { "Create new community"},
         text = {
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 TextField(
-                    value = state.payer,
+                    value = state.name,
                     onValueChange = {
-                        onEvent(ExpenseEvent.SetPayer(it))
-                        onEvent(ExpenseEvent.SetCommunity(nameCommunity))
+                        onEvent(CommunityEvent.SetName(it))
                     },
                     placeholder = {
-                        Text(text = "Payer")
+                        Text(text = "Community Name")
                     }
-                )
-                TextField(
-                    value = state.title,
-                    onValueChange = {
-                        onEvent(ExpenseEvent.SetTitle(it))
-                    },
-                    placeholder = {
-                        Text(text = "Title")
-                    }
-                )
-                TextField(
-                    value = state.description,
-                    onValueChange = {
-                        onEvent(ExpenseEvent.SetDescription(it))
-                    },
-                    placeholder = {
-                        Text(text = "Description")
-                    }
-                )
-                TextField(
-                    value = state.amount.toString(),
-                    onValueChange = {
-                        onEvent(ExpenseEvent.SetAmount(it.toDouble()))
-                    },
-                    placeholder = {
-                        Text(text = "Payer")
-                    },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                 )
                 TextField(
                     value = state.participants,
                     onValueChange = {
-                        onEvent(ExpenseEvent.SetParticipants(it))
+                        onEvent(CommunityEvent.SetParticipants(it))
                     },
                     placeholder = {
                         Text(text = "Participants (comma separated)")
                     }
                 )
-                DatePicker(
-                    state = rememberDatePickerState(initialSelectedDateMillis = System.currentTimeMillis(), initialDisplayMode = DisplayMode.Input),
-                    title = null,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight(),
-                    dateFormatter = DatePickerFormatter(),
-                    headline = { Text(text = "Select Date") },
-                    showModeToggle = false
 
-                )
             }
         },
         confirmButton = {
@@ -109,7 +71,7 @@ fun AddExpenseDialog(
                 contentAlignment = Alignment.CenterEnd
             ) {
                 Button(onClick = {
-                    onEvent(ExpenseEvent.SaveExpense)
+                    onEvent(CommunityEvent.SaveCommunity)
                 }) {
                     Text(text = "Save")
                 }
