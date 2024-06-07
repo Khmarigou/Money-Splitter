@@ -92,7 +92,7 @@ class ExpenseViewModel(
                 val amount = state.value.amount
                 val date = state.value.date
                 val participantsString = state.value.participants
-                if(payer.isBlank() || title.isBlank() || description.isBlank() || amount <= 0){
+                if(payer.isBlank() || title.isBlank() || description.isBlank() || amount <= 0 || participantsString.isBlank()){
                     Toast.makeText(context, "All fields must be filled", Toast.LENGTH_SHORT).show()
                     return
                 }

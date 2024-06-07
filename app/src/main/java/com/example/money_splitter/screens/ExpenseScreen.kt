@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.Button
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -22,6 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.money_splitter.Screen
 import com.example.money_splitter.database.ExpenseEvent
 import com.example.money_splitter.database.ExpenseState
 import com.example.money_splitter.entity.getParticipantsAsString
@@ -60,7 +62,7 @@ fun ExpenseScreen(
 
             LazyColumn(
                 contentPadding = padding,
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 items(state.expenses) {expense ->
@@ -92,6 +94,11 @@ fun ExpenseScreen(
                         }
                     }
                 }
+            }
+            Button(onClick = {
+                navController.navigate(Screen.MainScreen.route)
+            }) {
+                Text(text = "Go back")
             }
         }
     }
