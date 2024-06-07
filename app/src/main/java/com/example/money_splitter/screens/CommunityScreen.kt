@@ -1,5 +1,6 @@
 package com.example.money_splitter.screens
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,6 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.money_splitter.Screen
 import com.example.money_splitter.database.CommunityEvent
 import com.example.money_splitter.database.CommunityState
 import com.example.money_splitter.database.ExpenseEvent
@@ -68,13 +70,15 @@ fun CommunityScreen(
                 items(state.communities) { community ->
                     Row(
                         modifier = Modifier.fillMaxWidth()
+                            .clickable {
+                                navController.navigate(Screen.DetailScreen.route)
+                            }
                     ) {
                         Column(
                             modifier = Modifier.weight(1f)
                         ) {
                             Text(text = "${community.name} ", fontSize = 20.sp)
                             Text(text = "Participants : ${community.getParticipantsAsString()}", fontSize = 12.sp)
-
                         }
 
                         }

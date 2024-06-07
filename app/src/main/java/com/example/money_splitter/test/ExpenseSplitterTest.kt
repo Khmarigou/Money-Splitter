@@ -21,7 +21,8 @@ class ExpenseSplitterTest {
                 Participant(name = "Bob"),
                 Participant(name = "Charlie")
             ),
-            date = System.currentTimeMillis()
+            date = System.currentTimeMillis(),
+            community = 0
         )
 
         // call the function to on the expense to test it
@@ -44,7 +45,8 @@ class ExpenseSplitterTest {
                 Participant(name = "Bob"),
                 Participant(name = "Charlie")
             ),
-            date = System.currentTimeMillis() // Utilisation de System.currentTimeMillis() pour la date
+            date = System.currentTimeMillis(),
+            community = 0// Utilisation de System.currentTimeMillis() pour la date
         )
 
         // call the function to on the expense to test it

@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
         ).build()
     }
 
-    private val viewModel by viewModels<ExpenseViewModel>(
+    private val ExpviewModel by viewModels<ExpenseViewModel>(
         factoryProducer = {
             object : ViewModelProvider.Factory {
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -67,9 +67,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MoneySplitterTheme {
-                val state by ComviewModel.state.collectAsState()
-                Log.d("MainActivity1", "onCreate: ${state.expenses}")
-                Navigation(state, onEvent = ComviewModel::onEvent)
+                val stateCom by ComviewModel.state.collectAsState()
+                val stateExp by ExpviewModel.state.collectAsState()
+                Navigation(stateExp = stateExp, stateCom = stateCom, onEventExp = ExpviewModel::onEvent, onEventCom = ComviewModel::onEvent, )
             }
         }
     }

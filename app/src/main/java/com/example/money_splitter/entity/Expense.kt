@@ -16,7 +16,8 @@ data class Expense(
     val amount: Double,
     val description: String,
     val participants: List<Participant>,
-    val date: Long
+    val date: Long,
+    val community: Int
 ) {
     fun splitExpense(): Double {
         val totalAmount = amount

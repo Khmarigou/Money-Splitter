@@ -100,7 +100,8 @@ class ExpenseViewModel(
                     description = description,
                     amount = amount,
                     date = date,
-                    participants = participants
+                    participants = participants,
+                    community = 0
                 )
                 viewModelScope.launch {
                     dao.insertExpense(expense)
