@@ -1,5 +1,6 @@
 package com.example.money_splitter.entity
 
+import android.util.Log
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
@@ -48,7 +49,10 @@ data class Expense(
 // Converters pour la liste des participants
 class Converters {
     @TypeConverter
-    fun fromString(value: String): List<Participant> {
+    fun fromString(value: String?): List<Participant> {
+        if (value.isNullOrEmpty()) {
+            return emptyList()
+        }
         val listType = object : TypeToken<List<Participant>>() {}.type
         return Gson().fromJson(value, listType)
     }
