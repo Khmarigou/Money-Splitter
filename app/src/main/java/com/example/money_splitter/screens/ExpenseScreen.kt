@@ -31,6 +31,7 @@ import kotlin.math.exp
 fun ExpenseScreen(
     state: ExpenseState,
     onEvent: (ExpenseEvent) -> Unit,
+    nameCommunity : String,
     navController: NavController
 ) {
     Scaffold(
@@ -44,13 +45,13 @@ fun ExpenseScreen(
         modifier = Modifier.padding(16.dp)
     ) { padding ->
         if(state.isAddingExpense) {
-            AddExpenseDialog(state = state, onEvent = onEvent)
+            AddExpenseDialog(state = state, onEvent = onEvent, nameCommunity = nameCommunity)
         }
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
             Text(
-                text = "Expense Screen",
+                text = "Expense Screen ${nameCommunity}",
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
@@ -63,20 +64,31 @@ fun ExpenseScreen(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 items(state.expenses) {expense ->
-                    Row (
-                        modifier = Modifier.fillMaxWidth()
-                    ){
-                        Column(
-                            modifier = Modifier.weight(1f)
+                    if (expense.community == nameCommunity) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth()
                         ) {
-                            Text(text = "${expense.title} (${expense.amount} €)", fontSize = 20.sp)
-                            Text(text = "Payed by ${expense.payer}", fontSize = 12.sp)
-                            Text(text = "Participants ${expense.getParticipantsAsString()}", fontSize = 12.sp)
-                        }
-                        IconButton(onClick = {
-                            onEvent(ExpenseEvent.DeleteExpense(expense))
-                        }) {
-                            Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete Expense")
+                            Column(
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                Text(
+                                    text = "${expense.title} (${expense.amount} €)",
+                                    fontSize = 20.sp
+                                )
+                                Text(text = "Payed by ${expense.payer}", fontSize = 12.sp)
+                                Text(
+                                    text = "Participants ${expense.getParticipantsAsString()}",
+                                    fontSize = 12.sp
+                                )
+                            }
+                            IconButton(onClick = {
+                                onEvent(ExpenseEvent.DeleteExpense(expense))
+                            }) {
+                                Icon(
+                                    imageVector = Icons.Default.Delete,
+                                    contentDescription = "Delete Expense"
+                                )
+                            }
                         }
                     }
                 }

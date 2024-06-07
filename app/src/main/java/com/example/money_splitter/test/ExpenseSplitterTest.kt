@@ -4,7 +4,6 @@ import com.example.money_splitter.entity.Expense
 import com.example.money_splitter.entity.Participant
 import junit.framework.Assert.assertEquals
 import org.junit.Test
-import java.time.LocalDateTime
 
 class ExpenseSplitterTest {
 
@@ -22,7 +21,7 @@ class ExpenseSplitterTest {
                 Participant(name = "Charlie")
             ),
             date = System.currentTimeMillis(),
-            community = 0
+            community = ""
         )
 
         // call the function to on the expense to test it
@@ -45,8 +44,8 @@ class ExpenseSplitterTest {
                 Participant(name = "Bob"),
                 Participant(name = "Charlie")
             ),
-            date = System.currentTimeMillis(),
-            community = 0// Utilisation de System.currentTimeMillis() pour la date
+            date = System.currentTimeMillis(),// Utilisation de System.currentTimeMillis() pour la date
+            community = ""
         )
 
         // call the function to on the expense to test it

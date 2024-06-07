@@ -71,6 +71,7 @@ fun CommunityScreen(
                     Row(
                         modifier = Modifier.fillMaxWidth()
                             .clickable {
+                                onEvent(CommunityEvent.SetName(community.name))
                                 navController.navigate(Screen.DetailScreen.route)
                             }
                     ) {

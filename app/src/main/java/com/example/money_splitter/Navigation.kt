@@ -27,11 +27,10 @@ fun Navigation(
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Screen.MainScreen.route) {
         composable(route = Screen.MainScreen.route) {
-            // ExpenseScreen(state, onEvent, navController = navController)
             CommunityScreen(stateCom, onEventCom, navController = navController)
         }
         composable(route = Screen.DetailScreen.route) {
-            ExpenseScreen(state = stateExp, onEvent = onEventExp, navController = navController)
+            ExpenseScreen(state = stateExp, onEvent = onEventExp, nameCommunity = stateCom.name, navController = navController)
         }
     }
 }

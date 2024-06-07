@@ -10,7 +10,9 @@ sealed interface ExpenseEvent {
     data class SetDescription(val description: String): ExpenseEvent
     data class SetParticipants(val participants: String): ExpenseEvent
     data class SetDate(val date: Long): ExpenseEvent
+    data class SetCommunity(val community: String): ExpenseEvent
     object ShowDialog: ExpenseEvent
     object HideDialog: ExpenseEvent
     data class DeleteExpense(val expense: Expense): ExpenseEvent
+
 }

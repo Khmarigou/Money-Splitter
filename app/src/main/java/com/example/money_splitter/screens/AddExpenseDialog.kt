@@ -29,7 +29,8 @@ import com.example.money_splitter.database.ExpenseState
 fun AddExpenseDialog(
     state: ExpenseState,
     onEvent: (ExpenseEvent) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    nameCommunity: String
 ) {
 
     AlertDialog(
@@ -46,6 +47,7 @@ fun AddExpenseDialog(
                     value = state.payer,
                     onValueChange = {
                         onEvent(ExpenseEvent.SetPayer(it))
+                        onEvent(ExpenseEvent.SetCommunity(nameCommunity))
                     },
                     placeholder = {
                         Text(text = "Payer")
