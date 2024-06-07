@@ -18,7 +18,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
+import com.example.money_splitter.database.CommunityDatabase
 import com.example.money_splitter.database.ExpenseDatabase
+import com.example.money_splitter.ui.theme.CommunityViewModel
 import com.example.money_splitter.ui.theme.ExpenseViewModel
 import com.example.money_splitter.ui.theme.MoneySplitterTheme
 
@@ -32,6 +34,14 @@ class MainActivity : ComponentActivity() {
         ).build()
     }
 
+    private val Comdb by lazy {
+        Room.databaseBuilder(
+            applicationContext,
+            CommunityDatabase::class.java,
+            "community.db"
+        ).build()
+    }
+
     private val viewModel by viewModels<ExpenseViewModel>(
         factoryProducer = {
             object : ViewModelProvider.Factory {
@@ -42,14 +52,24 @@ class MainActivity : ComponentActivity() {
         }
     )
 
+    private val ComviewModel by viewModels<CommunityViewModel>(
+        factoryProducer = {
+            object : ViewModelProvider.Factory {
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                    return CommunityViewModel(applicationContext, Comdb.CommunityDAO()) as T
+                }
+            }
+        }
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             MoneySplitterTheme {
-                val state by viewModel.state.collectAsState()
+                val state by ComviewModel.state.collectAsState()
                 Log.d("MainActivity1", "onCreate: ${state.expenses}")
-                Navigation(state, onEvent = viewModel::onEvent)
+                Navigation(state, onEvent = ComviewModel::onEvent)
             }
         }
     }
