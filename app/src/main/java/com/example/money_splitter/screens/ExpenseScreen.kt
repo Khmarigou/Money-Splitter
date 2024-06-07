@@ -1,5 +1,6 @@
 package com.example.money_splitter.screens
 
+import android.provider.Telephony.Mms.Part
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,6 +27,7 @@ import androidx.navigation.NavController
 import com.example.money_splitter.Screen
 import com.example.money_splitter.database.ExpenseEvent
 import com.example.money_splitter.database.ExpenseState
+import com.example.money_splitter.entity.Participant
 import com.example.money_splitter.entity.getParticipantsAsString
 import kotlin.math.exp
 
@@ -34,6 +36,7 @@ fun ExpenseScreen(
     state: ExpenseState,
     onEvent: (ExpenseEvent) -> Unit,
     nameCommunity : String,
+    participants: List<Participant>,
     navController: NavController
 ) {
     Scaffold(
@@ -47,7 +50,7 @@ fun ExpenseScreen(
         modifier = Modifier.padding(16.dp)
     ) { padding ->
         if(state.isAddingExpense) {
-            AddExpenseDialog(state = state, onEvent = onEvent, nameCommunity = nameCommunity)
+            AddExpenseDialog(state = state, onEvent = onEvent, nameCommunity = nameCommunity, participants = participants)
         }
         Column(
             modifier = Modifier.fillMaxSize()
