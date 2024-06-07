@@ -39,18 +39,16 @@ fun CommunityScreen(
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(onClick = {
-                val community = Community(
-                    name = "Test Community",
-                    participants = listOf(),
-                    expenses = listOf()
-                )
-                onEvent(CommunityEvent.SaveCommunity)
+                onEvent(CommunityEvent.ShowDialog)
             }) {
-                Icon(imageVector = Icons.Default.Add, contentDescription = "Adding Expense")
+                Icon(imageVector = Icons.Default.Add, contentDescription = "Creating community")
             }
         },
         modifier = Modifier.padding(16.dp)
-    ) { padding ->
+    ){ padding ->
+        if(state.isAddingCommunity) {
+            AddCommunityDialog(state = state, onEvent = onEvent)
+        }
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
@@ -75,11 +73,8 @@ fun CommunityScreen(
                             modifier = Modifier.weight(1f)
                         ) {
                             Text(text = "${community.name} ", fontSize = 20.sp)
-                            Text(text = "Participants ${community.participants}", fontSize = 12.sp)
-                            Text(
-                                text = "Expenses ${community.expenses}",
-                                fontSize = 12.sp
-                            )
+                            Text(text = "Participants : ${community.getParticipantsAsString()}", fontSize = 12.sp)
+
                         }
 
                         }

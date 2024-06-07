@@ -27,3 +27,7 @@ class ExpenseListConverter {
         return Gson().toJson(list)
     }
 }
+
+fun Community.getParticipantsAsString(): String {
+    return participants.joinToString(", ") { it.name }
+}

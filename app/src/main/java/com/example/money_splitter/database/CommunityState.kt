@@ -8,6 +8,6 @@ data class CommunityState(
     val communities: List<Community> = emptyList(),
     val isAddingCommunity: Boolean = false,
     val name: String = "",
-    val participants: List<Participant> = emptyList(),
+    val participants: String = "",
     val expenses: List<Expense> = emptyList()
 )

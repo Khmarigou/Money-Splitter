@@ -62,13 +62,15 @@ class CommunityViewModel(
             }
             CommunityEvent.SaveCommunity -> {
                 val name = state.value.name
-                val participants = state.value.participants
+                val participantsString = state.value.participants
                 val expenses = state.value.expenses
 
-                if (name.isBlank() || participants.isEmpty() || expenses.isEmpty()) {
+                if (name.isBlank() || participantsString.isBlank()) {
                     Toast.makeText(context, "All fields must be filled", Toast.LENGTH_SHORT).show()
                     return
                 }
+
+                val participants = participantsString.split(",").map { Participant(it.trim()) }
 
                 val community = Community(
                     name = name,
@@ -81,7 +83,7 @@ class CommunityViewModel(
                 _state.update { it.copy(
                     isAddingCommunity = false,
                     name = "",
-                    participants = emptyList(),
+                    participants = "",
                     expenses = emptyList()
                 ) }
             }
