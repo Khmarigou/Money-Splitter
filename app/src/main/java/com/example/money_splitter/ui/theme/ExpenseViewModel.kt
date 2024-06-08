@@ -28,7 +28,6 @@ class ExpenseViewModel(
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), ExpenseState())
 
-
     fun onEvent(event: ExpenseEvent){
         when(event){
             is ExpenseEvent.DeleteExpense -> {
@@ -50,7 +49,6 @@ class ExpenseViewModel(
                 _state.update { it.copy(
                     date = event.date
                 ) }
-
             }
             is ExpenseEvent.SetDescription -> {
                 _state.update {
@@ -87,7 +85,6 @@ class ExpenseViewModel(
             is ExpenseEvent.SelectExpense -> {
                 _state.update { it.copy(selectedExpense = event.expense) }
             }
-
             ExpenseEvent.SaveExpense -> {
                 val payer = state.value.payer
                 val title = state.value.title
@@ -99,9 +96,15 @@ class ExpenseViewModel(
                     Toast.makeText(context, "All fields must be filled", Toast.LENGTH_SHORT).show()
                     return
                 }
-                val participantNames = participantsString.split(",").map { it.trim() }
-                val share = amount / participantNames.size
-                val participants = participantNames.map { Participant(it, share) }
+
+                val participantStrings = participantsString.split(",").map { it.trim() }
+                val participants = participantStrings.map { participantString ->
+                    val parts = participantString.split(":")
+                    val name = parts[0]
+                    val amountToPay = parts.getOrNull(1)?.toDoubleOrNull() ?: 0.0
+                    Participant(name, amountToPay)
+                }
+
                 val community = state.value.community
 
                 val expense = Expense(
@@ -113,6 +116,7 @@ class ExpenseViewModel(
                     participants = participants,
                     community = community
                 )
+
                 viewModelScope.launch {
                     dao.insertExpense(expense)
                 }

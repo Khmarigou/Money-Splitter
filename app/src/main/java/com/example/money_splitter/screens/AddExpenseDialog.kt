@@ -1,29 +1,11 @@
 package com.example.money_splitter.screens
 
-import android.app.AlertDialog
-import android.provider.Telephony.Mms.Part
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerFormatter
-import androidx.compose.material3.DisplayMode
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.rememberDatePickerState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
@@ -41,15 +23,16 @@ fun AddExpenseDialog(
     nameCommunity: String,
     participants: List<Participant>
 ) {
-
     val selectedParticipants = remember { mutableStateOf(participants.map { it.name to false }.toMap()) }
+    val mode = remember { mutableStateOf("equitable") }  // State for mode selection
+    val nonEquitableShares = remember { mutableStateOf(participants.map { it.name to 0.0 }.toMap()) }
 
     AlertDialog(
         modifier = modifier.fillMaxWidth(0.9f),
         onDismissRequest = {
             onEvent(ExpenseEvent.HideDialog)
         },
-        title = { "Add Expense"},
+        title = { Text("Add Expense") },
         text = {
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -61,55 +44,79 @@ fun AddExpenseDialog(
                         onEvent(ExpenseEvent.SetPayer(it))
                         onEvent(ExpenseEvent.SetCommunity(nameCommunity))
                     },
-                    placeholder = {
-                        Text(text = "Payer")
-                    }
+                    placeholder = { Text(text = "Payer") }
                 )
                 TextField(
                     value = state.title,
-                    onValueChange = {
-                        onEvent(ExpenseEvent.SetTitle(it))
-                    },
-                    placeholder = {
-                        Text(text = "Title")
-                    }
+                    onValueChange = { onEvent(ExpenseEvent.SetTitle(it)) },
+                    placeholder = { Text(text = "Title") }
                 )
                 TextField(
                     value = state.description,
-                    onValueChange = {
-                        onEvent(ExpenseEvent.SetDescription(it))
-                    },
-                    placeholder = {
-                        Text(text = "Description")
-                    }
+                    onValueChange = { onEvent(ExpenseEvent.SetDescription(it)) },
+                    placeholder = { Text(text = "Description") }
                 )
                 TextField(
                     value = state.amount.toString(),
-                    onValueChange = {
-                        onEvent(ExpenseEvent.SetAmount(it.toDouble()))
-                    },
-                    placeholder = {
-                        Text(text = "Payer")
-                    },
+                    onValueChange = { onEvent(ExpenseEvent.SetAmount(it.toDouble())) },
+                    placeholder = { Text(text = "Amount") },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                 )
-                Text("Participants:")
-                participants.forEach { participant ->
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Checkbox(
-                            checked = selectedParticipants.value[participant.name] ?: false,
-                            onCheckedChange = { isChecked ->
-                                selectedParticipants.value = selectedParticipants.value.toMutableMap().apply {
-                                    this[participant.name] = isChecked
+
+                // Mode Selection Button
+                Button(
+                    onClick = { mode.value = if (mode.value == "equitable") "nonEquitable" else "equitable" },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(text = if (mode.value == "equitable") "Switch to Non Equitable" else "Switch to Equitable")
+                }
+
+                // Participants selection or input based on mode
+                if (mode.value == "equitable") {
+                    Text("Participants:")
+                    participants.forEach { participant ->
+                        val isChecked = selectedParticipants.value[participant.name] ?: false
+                        val amountToPay = if (isChecked) state.amount / selectedParticipants.value.count { it.value } else 0.0
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Checkbox(
+                                checked = isChecked,
+                                onCheckedChange = { isChecked ->
+                                    selectedParticipants.value = selectedParticipants.value.toMutableMap().apply {
+                                        this[participant.name] = isChecked
+                                    }
                                 }
+                            )
+                            Text(text = participant.name)
+                            if (isChecked) {
+                                Text(text = " - ${amountToPay}€")
                             }
-                        )
-                        Text(text = participant.name)
+                        }
+                    }
+                } else {
+                    Text("Participants and their share (%):")
+                    participants.forEach { participant ->
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(text = participant.name, modifier = Modifier.weight(1f))
+                            TextField(
+                                value = nonEquitableShares.value[participant.name]?.toString() ?: "0",
+                                onValueChange = { newValue ->
+                                    nonEquitableShares.value = nonEquitableShares.value.toMutableMap().apply {
+                                        this[participant.name] = newValue.toDoubleOrNull() ?: 0.0
+                                    }
+                                },
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                modifier = Modifier.width(100.dp)
+                            )
+                        }
                     }
                 }
+
                 DatePicker(
                     state = rememberDatePickerState(initialSelectedDateMillis = System.currentTimeMillis(), initialDisplayMode = DisplayMode.Input),
                     title = null,
@@ -119,7 +126,6 @@ fun AddExpenseDialog(
                     dateFormatter = DatePickerFormatter(),
                     headline = { Text(text = "Select Date") },
                     showModeToggle = false
-
                 )
             }
         },
@@ -129,8 +135,20 @@ fun AddExpenseDialog(
                 contentAlignment = Alignment.CenterEnd
             ) {
                 Button(onClick = {
-                    val selectedParticipantsList = selectedParticipants.value.filter { it.value }.keys.toList()
-                    onEvent(ExpenseEvent.SetParticipants(selectedParticipantsList.joinToString(", ")))
+                    if (mode.value == "equitable") {
+                        val selectedParticipantsList = selectedParticipants.value.filter { it.value }.keys.toList()
+                        val equitableParticipants = selectedParticipantsList.map { name ->
+                            val amountToPay = state.amount / selectedParticipantsList.size
+                            Participant(name = name, amountToPay = amountToPay)
+                        }
+                        onEvent(ExpenseEvent.SetParticipants(equitableParticipants.joinToString(",") { "${it.name}:${it.amountToPay}" }))
+                    } else {
+                        val participantsWithShares = nonEquitableShares.value.map { (name, share) ->
+                            val amountToPay = (state.amount * share) / 100
+                            Participant(name = name, amountToPay = amountToPay)
+                        }
+                        onEvent(ExpenseEvent.SetParticipants(participantsWithShares.joinToString(",") { "${it.name}:${it.amountToPay}" }))
+                    }
                     onEvent(ExpenseEvent.SaveExpense)
                 }) {
                     Text(text = "Save")
