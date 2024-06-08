@@ -14,6 +14,7 @@ import com.example.money_splitter.database.ExpenseEvent
 import com.example.money_splitter.database.ExpenseState
 import com.example.money_splitter.screens.CommunityScreen
 import com.example.money_splitter.screens.DetailScreen
+import com.example.money_splitter.screens.ExpenseDetailScreen
 import com.example.money_splitter.screens.ExpenseScreen
 import com.example.money_splitter.screens.MainScreen
 
@@ -33,6 +34,13 @@ fun Navigation(
             val community = stateCom.communities.find { it.name == stateCom.name }
             val participants = community?.participants ?: emptyList()
             ExpenseScreen(state = stateExp, onEvent = onEventExp, nameCommunity = stateCom.name, participants = participants, navController = navController)
+        }
+
+        composable(route = Screen.ExpenseDetailScreen.route) {
+            val selectedExpense = stateExp.selectedExpense
+            if (selectedExpense != null) {
+                ExpenseDetailScreen(navController = navController, expense = selectedExpense)
+            }
         }
     }
 }

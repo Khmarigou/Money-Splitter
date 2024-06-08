@@ -1,6 +1,7 @@
 package com.example.money_splitter.screens
 
 import android.provider.Telephony.Mms.Part
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -71,7 +72,13 @@ fun ExpenseScreen(
                 items(state.expenses) {expense ->
                     if (expense.community == nameCommunity) {
                         Row(
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp)
+                                .clickable {
+                                    onEvent(ExpenseEvent.SelectExpense(expense))
+                                    navController.navigate(Screen.ExpenseDetailScreen.route)
+                                }
                         ) {
                             Column(
                                 modifier = Modifier.weight(1f)

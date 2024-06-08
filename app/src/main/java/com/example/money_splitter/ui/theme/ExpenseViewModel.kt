@@ -84,6 +84,10 @@ class ExpenseViewModel(
                     isAddingExpense = true
                 ) }
             }
+            is ExpenseEvent.SelectExpense -> {
+                _state.update { it.copy(selectedExpense = event.expense) }
+            }
+
             ExpenseEvent.SaveExpense -> {
                 val payer = state.value.payer
                 val title = state.value.title
@@ -95,7 +99,9 @@ class ExpenseViewModel(
                     Toast.makeText(context, "All fields must be filled", Toast.LENGTH_SHORT).show()
                     return
                 }
-                val participants = participantsString.split(",").map { Participant(it.trim()) }
+                val participantNames = participantsString.split(",").map { it.trim() }
+                val share = amount / participantNames.size
+                val participants = participantNames.map { Participant(it, share) }
                 val community = state.value.community
 
                 val expense = Expense(

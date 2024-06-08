@@ -12,5 +12,6 @@ data class ExpenseState(
     val description: String = "",
     val participants: String = "",
     val date: Long = System.currentTimeMillis(),
-    val community : String = ""
+    val community : String = "",
+    val selectedExpense: Expense? = null
 )

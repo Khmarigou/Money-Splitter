@@ -14,5 +14,6 @@ sealed interface ExpenseEvent {
     object ShowDialog: ExpenseEvent
     object HideDialog: ExpenseEvent
     data class DeleteExpense(val expense: Expense): ExpenseEvent
+    data class SelectExpense(val expense: Expense) : ExpenseEvent
 
 }
