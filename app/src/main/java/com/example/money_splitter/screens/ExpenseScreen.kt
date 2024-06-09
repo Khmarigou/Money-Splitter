@@ -1,6 +1,7 @@
 package com.example.money_splitter.screens
 
 import android.provider.Telephony.Mms.Part
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,8 +13,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.Button
+import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -21,6 +25,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -42,13 +47,29 @@ fun ExpenseScreen(
 ) {
     Scaffold(
         floatingActionButton = {
-            FloatingActionButton(onClick = { 
-                onEvent(ExpenseEvent.ShowDialog)
-            }) {
-                Icon(imageVector = Icons.Default.Add, contentDescription = "Adding Expense")
+            Row (
+                modifier = Modifier.fillMaxWidth(0.9f),
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ){
+                FloatingActionButton(onClick = {
+                    navController.popBackStack()
+                }) {
+                    Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Go back")
+                }
+                FloatingActionButton(onClick = {
+                    navController.navigate(Screen.DetailScreen.route)
+                }) {
+                    Icon(imageVector = Icons.Default.List, contentDescription = "Details")
+                }
+                FloatingActionButton(onClick = {
+                    onEvent(ExpenseEvent.ShowDialog)
+                }) {
+                    Icon(imageVector = Icons.Default.Add, contentDescription = "Adding Expense")
+                }
             }
         },
-        modifier = Modifier.padding(16.dp)
+        modifier = Modifier.padding(16.dp),
+        floatingActionButtonPosition = FabPosition.Center
     ) { padding ->
         if(state.isAddingExpense) {
             AddExpenseDialog(state = state, onEvent = onEvent, nameCommunity = nameCommunity, participants = participants)
@@ -104,11 +125,6 @@ fun ExpenseScreen(
                         }
                     }
                 }
-            }
-            Button(onClick = {
-                navController.navigate(Screen.MainScreen.route)
-            }) {
-                Text(text = "Go back")
             }
         }
     }

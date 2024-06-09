@@ -1,10 +1,6 @@
 package com.example.money_splitter
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.Button
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -16,7 +12,6 @@ import com.example.money_splitter.screens.CommunityScreen
 import com.example.money_splitter.screens.DetailScreen
 import com.example.money_splitter.screens.ExpenseDetailScreen
 import com.example.money_splitter.screens.ExpenseScreen
-import com.example.money_splitter.screens.MainScreen
 
 @Composable
 fun Navigation(
@@ -30,7 +25,7 @@ fun Navigation(
         composable(route = Screen.MainScreen.route) {
             CommunityScreen(stateCom, onEventCom, navController = navController)
         }
-        composable(route = Screen.DetailScreen.route) {
+        composable(route = Screen.ExpenseScreen.route) {
             val community = stateCom.communities.find { it.name == stateCom.name }
             val participants = community?.participants ?: emptyList()
             ExpenseScreen(state = stateExp, onEvent = onEventExp, nameCommunity = stateCom.name, participants = participants, navController = navController)
@@ -40,6 +35,15 @@ fun Navigation(
             val selectedExpense = stateExp.selectedExpense
             if (selectedExpense != null) {
                 ExpenseDetailScreen(navController = navController, expense = selectedExpense)
+            }
+        }
+
+        composable(route = Screen.DetailScreen.route) {
+            val community = stateCom.communities.find { it.name == stateCom.name }
+            val participants = community?.participants ?: emptyList()
+            val expenses = stateExp.expenses.filter { it.community == stateCom.name }
+            if (stateExp.selectedExpense != null) {
+                DetailScreen(navController = navController, community = community, participants = participants, expenses = expenses)
             }
         }
     }
