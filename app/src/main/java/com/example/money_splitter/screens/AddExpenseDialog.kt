@@ -148,11 +148,12 @@ fun AddExpenseDialog(
                             val amountToPay = state.amount / selectedParticipantsList.size
                             Participant(name = name, amountToPay = amountToPay)
                         }
-                        onEvent(ExpenseEvent.SetParticipants(equitableParticipants.joinToString(",") { "${it.name}:${String.format(Locale.getDefault(), "%.2f", it.amountToPay)}" }))
+                        onEvent(ExpenseEvent.SetParticipants(equitableParticipants.filter { it.amountToPay > 0 }
+                            .joinToString(",") { "${it.name}:${String.format(Locale.getDefault(), "%.2f", it.amountToPay)}" }))
                     } else {
-                        val participantsWithShares = nonEquitableShares.value.map { (name, share) ->
+                        val participantsWithShares = nonEquitableShares.value.mapNotNull { (name, share) ->
                             val amountToPay = (state.amount * share) / 100
-                            Participant(name = name, amountToPay = amountToPay)
+                            if (amountToPay > 0) Participant(name = name, amountToPay = amountToPay) else null
                         }
                         onEvent(ExpenseEvent.SetParticipants(participantsWithShares.joinToString(",") { "${it.name}:${String.format(Locale.getDefault(), "%.2f", it.amountToPay)}" }))
                     }
