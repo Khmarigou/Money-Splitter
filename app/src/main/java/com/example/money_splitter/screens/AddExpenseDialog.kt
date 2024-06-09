@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.example.money_splitter.database.ExpenseEvent
 import com.example.money_splitter.database.ExpenseState
 import com.example.money_splitter.entity.Participant
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -91,7 +92,7 @@ fun AddExpenseDialog(
                             )
                             Text(text = participant.name)
                             if (isChecked) {
-                                Text(text = " - ${amountToPay}€")
+                                Text(text = " - ${String.format(Locale.getDefault(), "%.2f", amountToPay)}€")
                             }
                         }
                     }
@@ -141,13 +142,13 @@ fun AddExpenseDialog(
                             val amountToPay = state.amount / selectedParticipantsList.size
                             Participant(name = name, amountToPay = amountToPay)
                         }
-                        onEvent(ExpenseEvent.SetParticipants(equitableParticipants.joinToString(",") { "${it.name}:${it.amountToPay}" }))
+                        onEvent(ExpenseEvent.SetParticipants(equitableParticipants.joinToString(",") { "${it.name}:${String.format(Locale.getDefault(), "%.2f", it.amountToPay)}" }))
                     } else {
                         val participantsWithShares = nonEquitableShares.value.map { (name, share) ->
                             val amountToPay = (state.amount * share) / 100
                             Participant(name = name, amountToPay = amountToPay)
                         }
-                        onEvent(ExpenseEvent.SetParticipants(participantsWithShares.joinToString(",") { "${it.name}:${it.amountToPay}" }))
+                        onEvent(ExpenseEvent.SetParticipants(participantsWithShares.joinToString(",") { "${it.name}:${String.format(Locale.getDefault(), "%.2f", it.amountToPay)}" }))
                     }
                     onEvent(ExpenseEvent.SaveExpense)
                 }) {

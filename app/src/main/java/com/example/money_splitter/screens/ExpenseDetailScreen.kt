@@ -33,15 +33,15 @@ fun ExpenseDetailScreen(navController: NavController, expense: Expense) {
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold
         )
-        Text(text = "Description: ${expense.description}")
-        Text(text = "Payer: ${expense.payer}")
+        Text(text = expense.description)
+        Text(text = "Payed by ${expense.payer}")
         Text(text = "Total Amount: ${expense.amount} €")
         val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         Text(text = "Date: ${format.format(expense.date)}")
 
         Text(text = "Participants:")
         expense.participants.forEach { participant ->
-            Text(text = "- ${participant.name}: ${participant.amountToPay}")
+            Text(text = "- ${participant.name}: ${String.format(Locale.getDefault(), "%.2f", participant.amountToPay)} €")
         }
         Button(onClick = {
             navController.popBackStack()

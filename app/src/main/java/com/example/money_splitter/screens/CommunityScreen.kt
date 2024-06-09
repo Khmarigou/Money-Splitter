@@ -55,7 +55,7 @@ fun CommunityScreen(
             modifier = Modifier.fillMaxSize()
         ) {
             Text(
-                text = "Community Screen",
+                text = "List of communities",
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),

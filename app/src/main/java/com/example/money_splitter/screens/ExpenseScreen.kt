@@ -57,7 +57,7 @@ fun ExpenseScreen(
             modifier = Modifier.fillMaxSize()
         ) {
             Text(
-                text = "Expense Screen ${nameCommunity}",
+                text = "Expenses of ${nameCommunity}",
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
