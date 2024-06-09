@@ -42,9 +42,7 @@ fun Navigation(
             val community = stateCom.communities.find { it.name == stateCom.name }
             val participants = community?.participants ?: emptyList()
             val expenses = stateExp.expenses.filter { it.community == stateCom.name }
-            if (stateExp.selectedExpense != null) {
-                DetailScreen(navController = navController, community = community, participants = participants, expenses = expenses)
-            }
+            DetailScreen(navController = navController, community = community, participants = participants, expenses = expenses)
         }
     }
 }
