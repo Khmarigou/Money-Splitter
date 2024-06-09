@@ -13,8 +13,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.NavDirections
-import com.example.money_splitter.Screen
 import com.example.money_splitter.entity.Expense
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -41,7 +39,7 @@ fun ExpenseDetailScreen(navController: NavController, expense: Expense) {
 
         Text(text = "Participants:")
         expense.participants.forEach { participant ->
-            Text(text = "- ${participant.name}: ${String.format(Locale.getDefault(), "%.2f", participant.amountToPay)} €")
+            Text(text = "- ${participant.name}")
         }
         Button(onClick = {
             navController.popBackStack()
