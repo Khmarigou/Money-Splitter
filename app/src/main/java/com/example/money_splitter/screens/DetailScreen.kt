@@ -31,7 +31,8 @@ fun DetailScreen(
     Column (
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
             text = "Details of ${community?.name ?: "Unkonwn"}",
@@ -44,7 +45,7 @@ fun DetailScreen(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
                 .padding(50.dp)
         ) {
 
@@ -61,6 +62,11 @@ fun DetailScreen(
                 }
                 Text(text = "Total: ${String.format(Locale.getDefault(), "%.2f", total)} €")
             }
+        }
+        Button(onClick = {
+            navController.popBackStack()
+        }) {
+            Text(text = "Go back")
         }
     }
 }
