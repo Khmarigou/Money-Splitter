@@ -8,6 +8,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.money_splitter.database.ExpenseEvent
@@ -45,17 +46,22 @@ fun AddExpenseDialog(
                         onEvent(ExpenseEvent.SetPayer(it))
                         onEvent(ExpenseEvent.SetCommunity(nameCommunity))
                     },
-                    placeholder = { Text(text = "Payer") }
+                    placeholder = { Text(text = "Payer") },
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words)
                 )
                 TextField(
                     value = state.title,
                     onValueChange = { onEvent(ExpenseEvent.SetTitle(it)) },
-                    placeholder = { Text(text = "Title") }
+                    placeholder = { Text(text = "Title") },
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences)
                 )
                 TextField(
                     value = state.description,
                     onValueChange = { onEvent(ExpenseEvent.SetDescription(it)) },
-                    placeholder = { Text(text = "Description") }
+                    placeholder = { Text(text = "Description") },
+                    keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences)
                 )
                 TextField(
                     value = state.amount.toString(),
