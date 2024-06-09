@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavDirections
 import com.example.money_splitter.Screen
 import com.example.money_splitter.entity.Expense
 
@@ -30,7 +31,7 @@ fun ExpenseDetailScreen(navController: NavController, expense: Expense) {
             Text(text = "${participant.name}: ${participant.amountToPay}")
         }
         Button(onClick = {
-            navController.navigate(Screen.MainScreen.route)
+            navController.popBackStack()
         }) {
             Text(text = "Go back")
         }
