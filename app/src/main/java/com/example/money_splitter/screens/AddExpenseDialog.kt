@@ -25,9 +25,9 @@ fun AddExpenseDialog(
     nameCommunity: String,
     participants: List<Participant>
 ) {
-    val selectedParticipants = remember { mutableStateOf(participants.map { it.name to false }.toMap()) }
+    val selectedParticipants = remember { mutableStateOf(participants.associate { it.name to false }) }
     val mode = remember { mutableStateOf("equitable") }  // State for mode selection
-    val nonEquitableShares = remember { mutableStateOf(participants.map { it.name to 0.0 }.toMap()) }
+    val nonEquitableShares = remember { mutableStateOf(participants.associate { it.name to 0.0 }) }
 
     AlertDialog(
         modifier = modifier.fillMaxWidth(0.9f),

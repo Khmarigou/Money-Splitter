@@ -11,10 +11,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,11 +24,7 @@ import androidx.navigation.NavController
 import com.example.money_splitter.Screen
 import com.example.money_splitter.database.CommunityEvent
 import com.example.money_splitter.database.CommunityState
-import com.example.money_splitter.database.ExpenseEvent
-import com.example.money_splitter.database.ExpenseState
-import com.example.money_splitter.entity.Community
 import com.example.money_splitter.entity.getParticipantsAsString
-import kotlin.math.exp
 
 @Composable
 fun CommunityScreen(

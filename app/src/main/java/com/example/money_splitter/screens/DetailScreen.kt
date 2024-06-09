@@ -17,7 +17,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.money_splitter.Screen
 import com.example.money_splitter.entity.Community
 import com.example.money_splitter.entity.Expense
 import com.example.money_splitter.entity.Participant
@@ -37,7 +36,7 @@ fun DetailScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Details of ${community?.name ?: "Unkonwn"}",
+            text = "Details of ${community?.name ?: "Unknown"}",
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),

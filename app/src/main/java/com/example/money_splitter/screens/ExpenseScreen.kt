@@ -1,7 +1,5 @@
 package com.example.money_splitter.screens
 
-import android.provider.Telephony.Mms.Part
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,7 +14,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.List
-import androidx.compose.material3.Button
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -25,7 +22,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,7 +31,6 @@ import com.example.money_splitter.database.ExpenseEvent
 import com.example.money_splitter.database.ExpenseState
 import com.example.money_splitter.entity.Participant
 import com.example.money_splitter.entity.getParticipantsAsString
-import kotlin.math.exp
 
 @Composable
 fun ExpenseScreen(
@@ -78,7 +73,7 @@ fun ExpenseScreen(
             modifier = Modifier.fillMaxSize()
         ) {
             Text(
-                text = "Expenses of ${nameCommunity}",
+                text = "Expenses of $nameCommunity",
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
